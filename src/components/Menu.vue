@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, defineEmits } from 'vue'
 
 interface IMenu {
   key: string
@@ -10,26 +10,35 @@ const props = defineProps<{
   currentValue: string
 }>();
 
+const emits = defineEmits<{
+  (e:string, menu: string, index: number): void
+}>();
+
 let currentValueData = ref(props.currentValue);
 
 onMounted(() => {
   console.log('Menu.vue props', props);
 })
 
-const chooseItem = (item: IMenu) => {
+
+
+const chooseItem = (item: IMenu, index: number) => {
   currentValueData.value = item.value;
+  emits('menuChange', item.value, index);
+
 }
 
 watch(() => props.currentValue, (val) => {
   console.log('currentValueData', val);
-  currentValueData.value =  val;
+  currentValueData.value = val;
 });
+
 
 </script>
 
 <template>
 <div class="cpn-menu">
-  <div class="cpn-menu-item" v-for="item in menuList" :key="item.key" @click="chooseItem(item)">
+  <div class="cpn-menu-item" v-for="(item, index) in menuList" :key="item.key" @click="chooseItem(item, index)">
     <span :class="item.value === currentValueData ? 'cpn-menu-item-active' : ''">{{item.value}}</span>
   </div>
 </div>

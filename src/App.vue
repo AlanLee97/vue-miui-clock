@@ -38,14 +38,22 @@ const carouselIndexChange = (index: number) => {
   carouselIndex.value = index;
   
 }
+
+const menuChange = (menu: string, index: number = 0) => {
+  console.log('app.vue menu', menu);
+  currentIndex.value = index;
+  
+}
+
+let currentIndex = ref(0);
 </script>
 
 <template>
 <div class="app">
   <SettingBar />
-  <Menu :menuList="menuList" :currentValue="menuList[carouselIndex]['value']" />
+  <Menu :menuList="menuList" :currentValue="menuList[carouselIndex]['value']" @menuChange="menuChange" />
   <div class="swiper-item-container">
-    <n-carousel :show-dots="false" @update:current-index="carouselIndexChange">
+    <n-carousel :current-index="currentIndex" :show-dots="false" @update:current-index="carouselIndexChange">
       <div class="swiper-item" v-for="item in menuList" :key="item.img">
         <img
           class="carousel-img"
