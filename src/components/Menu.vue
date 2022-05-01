@@ -20,7 +20,6 @@ onMounted(() => {
   console.log('Menu.vue props', props);
 })
 
-
 const chooseItem = (item: IMenu, index: number) => {
   currentValueData.value = item.value;
   emits('menuChange', item.value, index);
